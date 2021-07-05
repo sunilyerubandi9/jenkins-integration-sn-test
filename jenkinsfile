@@ -8,7 +8,7 @@ pipeline {
             steps {
                 echo "Building..."
                 snDevOpsStep()
-                sh 'mvn clean install'
+                sh '/usr/local/bin/mvn clean install'
             }
         }
         stage("Test") {
@@ -16,7 +16,7 @@ pipeline {
                 sleep 5
             	echo "Testing..."
                 snDevOpsStep()
-                sh "mvn test -Dpublish"
+                sh "/usr/local/bin/mvn test -Dpublish"
                junit "**/target/surefire-reports/*.xml"
             }
         }
