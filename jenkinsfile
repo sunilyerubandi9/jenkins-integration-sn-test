@@ -31,7 +31,7 @@ pipeline {
                     }
                 }
                 stage("Deploy to Platform") {
-                    stages {
+                    parallel {
                         stage("Deploy to Mac") {
                             steps {
                                 echo "Deploying to Mac.."
@@ -62,11 +62,11 @@ pipeline {
             steps {
             	echo "Prod deploy..."
                 snDevOpsPackage(name: "devops_pipeline_demo", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5"}]}""")
+                    {"name": "demo1_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1_win"},
+                    {"name": "demo2_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2_win"},
+                    {"name": "demo3_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3_win"},
+                    {"name": "demo4_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4_win"},
+                    {"name": "demo5_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5_win"}]}""")
             }
         }
     }
