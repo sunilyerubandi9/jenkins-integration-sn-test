@@ -18,45 +18,15 @@ pipeline {
             }
         }
         stage("Deploy") {
-            stages {
-                stage("Deploy to Cloud") {
-                    steps {
-                        echo "Deploying to Cloud.."
-                        snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                            {"name": "demo1_cloud.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1_cloud"},
-                            {"name": "demo2_cloud.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2_cloud"},
-                            {"name": "demo3_cloud.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3_cloud"},
-                            {"name": "demo4_cloud.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4_cloud"},
-                            {"name": "demo5_cloud.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5_cloud"}]}""")
-                    }
+            steps {
+                echo "Deploying.."
+                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
+                    {"name": "demo1.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1"},
+                    {"name": "demo2.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2"},
+                    {"name": "demo3.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3"},
+                    {"name": "demo4.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4"},
+                    {"name": "demo5.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5"}]}""")
                 }
-                stage("Deploy to Platform") {
-                    parallel {
-                        stage("Deploy to Mac") {
-                            steps {
-                                echo "Deploying to Mac.."
-                                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                                    {"name": "demo1_mac.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1_mac"},
-                                    {"name": "demo2_mac.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2_mac"},
-                                    {"name": "demo3_mac.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3_mac"},
-                                    {"name": "demo4_mac.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4_mac"},
-                                    {"name": "demo5_mac.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5_mac"}]}""")
-                            }
-                        }
-                        stage("Deploy to Window") {
-                            steps {
-                                echo "Deploying to Window.."
-                                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                                    {"name": "demo1_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo1_win"},
-                                    {"name": "demo2_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo2_win"},
-                                    {"name": "demo3_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo3_win"},
-                                    {"name": "demo4_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo4_win"},
-                                    {"name": "demo5_win.jar","version": "1.0","semanticVersion": "1.1.0","repositoryName": "demo5_win"}]}""")
-                            }
-                        }
-                    }
-                }
-            }
         }
         stage("Prod") {
             steps {
