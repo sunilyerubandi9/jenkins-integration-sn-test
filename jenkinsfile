@@ -77,12 +77,12 @@ pipeline {
                 stage("Prod to Window") {
                     steps {
                         echo "Deploying to Prod Window.."
-                        snDevOpsPackage(name: "${packageName}-window", artifactsPayload: """{"artifacts": [
-                            {"name": "demo1ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1ˇ"},
-                            {"name": "demo2ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2ˇ"},
-                            {"name": "demo3ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3ˇ"},
-                            {"name": "demo4ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4ˇ"},
-                            {"name": "demo5ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5ˇ"}]}""")
+                        snDevOpsPackage(name: "${packageName}-win", artifactsPayload: """{"artifacts": [
+                            {"name": "demo1_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_win"},
+                            {"name": "demo2_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_win"},
+                            {"name": "demo3_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_win"},
+                            {"name": "demo4_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_win"},
+                            {"name": "demo5_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_win"}]}""")
                     }
                 }
             }
