@@ -62,14 +62,29 @@ pipeline {
             }
         }
         stage("Prod") {
-            steps {
-            	echo "Prod deploy..."
-                snDevOpsPackage(name: "${packageName}", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+            stages {
+                stage("Prod to Mac") {
+                    steps {
+                        echo "Deploying to Prod Mac.."
+                        snDevOpsPackage(name: "${packageName}-mac", artifactsPayload: """{"artifacts": [
+                            {"name": "demo1_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_mac"},
+                            {"name": "demo2_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_mac"},
+                            {"name": "demo3_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_mac"},
+                            {"name": "demo4_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_mac"},
+                            {"name": "demo5_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_mac"}]}""")
+                    }
+                }
+                stage("Prod to Window") {
+                    steps {
+                        echo "Deploying to Prod Window.."
+                        snDevOpsPackage(name: "${packageName}-window", artifactsPayload: """{"artifacts": [
+                            {"name": "demo1ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1ˇ"},
+                            {"name": "demo2ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2ˇ"},
+                            {"name": "demo3ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3ˇ"},
+                            {"name": "demo4ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4ˇ"},
+                            {"name": "demo5ˇ.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5ˇ"}]}""")
+                    }
+                }
             }
         }
     }
