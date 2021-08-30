@@ -1,4 +1,3 @@
-
 def semanticVersion = "${env.BUILD_NUMBER}.0.0"
 def packageName = "devops_pipeline_demo_${env.BUILD_NUMBER}"
 def version = "${env.BUILD_NUMBER}.0"
@@ -18,9 +17,65 @@ pipeline {
             }
         }
         stage("SoftwareQuality") {
-            steps {
-            	echo "Software Quality..."
-                sonarTest()
+            stages {
+                stage("SoftwareQuality-dev") {
+                    steps {
+                        echo "Software Quality Dev..."
+                        sonarTest()
+                    }
+                }
+                stage("SoftwareQuality-stage") {
+                    parallel {
+                        stage("SoftwareQuality-stage-win") {
+                            steps {
+                                echo "Software Quality Stage Win..."
+                                sonarTest()
+                            }
+                        }
+                        stage("SoftwareQuality-mac") {
+                            steps {
+                                echo "Software Quality Stage Mac..."
+                                sonarTest()
+                            }
+                        }
+                    }
+                }
+                stage("SoftwareQuality-prod") {
+                    stages {
+                        stage("SoftwareQuality-prod-win") {
+                            parallel {
+                                stage("SoftwareQuality-prod-win-octacore") {
+                                    steps {
+                                        echo "Software Quality Prod Win octacore..."
+                                        sonarTest()
+                                    }
+                                }
+                                stage("SoftwareQuality-prod-win-dualcore") {
+                                    stages {
+                                        echo "SSoftware Quality Prod Win dualcore..."
+                                        sonarTest()
+                                    }
+                                }
+                            }
+                        }
+                        stage("SoftwareQuality-prod-mac") {
+                            stages {
+                                stage("SoftwareQuality-prod-mac-octacore") {
+                                    steps {
+                                        echo "Software Quality Prod mac octacore..."
+                                        sonarTest()
+                                    }
+                                }
+                                stage("SoftwareQuality-prod-mac-dualcore") {
+                                    stages {
+                                        echo "Software Quality Prod Mac dualcore..."
+                                        sonarTest()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         stage("Test") {
