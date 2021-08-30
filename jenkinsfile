@@ -25,7 +25,7 @@ pipeline {
                     }
                 }
                 stage("SoftwareQuality-stage") {
-                    parallel {
+                    stages {
                         stage("SoftwareQuality-stage-win") {
                             steps {
                                 echo "Software Quality Stage Win..."
@@ -43,7 +43,7 @@ pipeline {
                 stage("SoftwareQuality-prod") {
                     stages {
                         stage("SoftwareQuality-prod-win") {
-                            parallel {
+                            stages {
                                 stage("SoftwareQuality-prod-win-octacore") {
                                     steps {
                                         echo "Software Quality Prod Win octacore..."
