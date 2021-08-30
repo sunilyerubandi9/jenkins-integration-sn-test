@@ -51,8 +51,8 @@ pipeline {
                                     }
                                 }
                                 stage("SoftwareQuality-prod-win-dualcore") {
-                                    stages {
-                                        echo "SSoftware Quality Prod Win dualcore..."
+                                    steps {
+                                        echo "Software Quality Prod Win dualcore..."
                                         sonarTest()
                                     }
                                 }
@@ -67,7 +67,7 @@ pipeline {
                                     }
                                 }
                                 stage("SoftwareQuality-prod-mac-dualcore") {
-                                    stages {
+                                    steps {
                                         echo "Software Quality Prod Mac dualcore..."
                                         sonarTest()
                                     }
