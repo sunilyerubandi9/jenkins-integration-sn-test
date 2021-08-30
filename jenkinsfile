@@ -43,16 +43,10 @@ pipeline {
                 stage("SoftwareQuality-prod") {
                     stages {
                         stage("SoftwareQuality-prod-win") {
-                            stages {
+                            parallel {
                                 stage("SoftwareQuality-prod-win-octacore") {
                                     steps {
                                         echo "Software Quality Prod Win octacore..."
-                                        sonarTest()
-                                    }
-                                }
-                                stage("SoftwareQuality-prod-win-dualcore") {
-                                    steps {
-                                        echo "Software Quality Prod Win dualcore..."
                                         sonarTest()
                                     }
                                 }
