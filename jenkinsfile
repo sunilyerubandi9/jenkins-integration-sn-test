@@ -6,25 +6,55 @@ pipeline {
     agent any
     stages {
         stage("Deploy") {
-            steps {
-                echo "Deploying.."
-                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+            stages {
+                stage("Deploy to Mac") {
+                    steps {
+                        echo "Deploying to Mac.."
+                        snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
+                            {"name": "demo1_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_mac"},
+                            {"name": "demo2_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_mac"},
+                            {"name": "demo3_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_mac"},
+                            {"name": "demo4_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_mac"},
+                            {"name": "demo5_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_mac"}]}""")
+                    }
                 }
+                stage("Deploy to Window") {
+                    steps {
+                        echo "Deploying to Window.."
+                        snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
+                            {"name": "demo1_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_win"},
+                            {"name": "demo2_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_win"},
+                            {"name": "demo3_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_win"},
+                            {"name": "demo4_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_win"},
+                            {"name": "demo5_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_win"}]}""")
+                    }
+                }
+            }
         }
         stage("Prod") {
-            steps {
-            	echo "Prod deploy..."
-                snDevOpsPackage(name: "${packageName}", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+            stages {
+                stage("Prod to Mac") {
+                    steps {
+                        echo "Deploying to Prod Mac.."
+                        snDevOpsPackage(name: "${packageName}-mac", artifactsPayload: """{"artifacts": [
+                            {"name": "demo1_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_mac"},
+                            {"name": "demo2_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_mac"},
+                            {"name": "demo3_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_mac"},
+                            {"name": "demo4_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_mac"},
+                            {"name": "demo5_mac.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_mac"}]}""")
+                    }
+                }
+                stage("Prod to Window") {
+                    steps {
+                        echo "Deploying to Prod Window.."
+                        snDevOpsPackage(name: "${packageName}-win", artifactsPayload: """{"artifacts": [
+                            {"name": "demo1_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_win"},
+                            {"name": "demo2_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_win"},
+                            {"name": "demo3_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_win"},
+                            {"name": "demo4_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_win"},
+                            {"name": "demo5_win.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_win"}]}""")
+                    }
+                }
             }
         }
     }
