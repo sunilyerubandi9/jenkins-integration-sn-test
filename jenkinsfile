@@ -45,11 +45,11 @@ pipeline {
             steps {
             	echo "Prod deploy..."
                 snDevOpsPackage(name: "${packageName}", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+                    {"name": "demo1_test.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1_test"},
+                    {"name": "demo2_test.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2_test"},
+                    {"name": "demo3_test.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3_test"},
+                    {"name": "demo4_test.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4_test"},
+                    {"name": "demo5_test.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5_test"}]}""")
             }
         }
     }
