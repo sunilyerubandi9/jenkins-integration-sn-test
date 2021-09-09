@@ -62,7 +62,7 @@ pipeline {
             }
         }
         stage("Prod") {
-            stages {
+            parallel {
                 stage("Prod to Mac") {
                     steps {
                         echo "Deploying to Prod Mac.."
