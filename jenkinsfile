@@ -1,61 +1,43 @@
-
-def semanticVersion = "${env.BUILD_NUMBER}.0.0"
-def packageName = "devops_pipeline_demo_${env.BUILD_NUMBER}"
-def version = "${env.BUILD_NUMBER}.0"
 pipeline {
     agent any
-    tools { 
-        maven 'Maven' 
-    }
-    environment {
-        SCANNER_HOME = tool 'sonarScanner'
-    }
     stages {
-        stage("Build") {
+        stage("S0") {
             steps {
-                echo "Building..."
-                sh '/usr/local/bin/mvn clean install -DskipTests=true'
+            	echo "S0..."
             }
         }
-        stage("SoftwareQuality") {
-            steps {
-            	echo "Software Quality..."
-                sonarTest()
-            }
-        }
-        stage("Test") {
-            steps {
-            	echo "Testing..."
-                sh "/usr/local/bin/mvn test -Dpublish"
-                junit "**/target/surefire-reports/*.xml"
-            }
-        }
-        stage("Deploy") {
-            steps {
-                echo "Deploying.."
-                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+        stage("S1") {
+            stages {
+                stage("S2") {
+                    steps {
+                        echo "S2..."
+                    }
                 }
-        }
-        stage("Prod") {
-            steps {
-            	echo "Prod deploy..."
-                snDevOpsPackage(name: "${packageName}", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
             }
         }
-    }
-}
-def sonarTest() {
-    withSonarQubeEnv('SonarQube_Cloud') {
-	    sh '${SCANNER_HOME}/bin/sonar-scanner -Dproject.settings=${SCANNER_HOME}/conf/sonar-scanner.properties'
+        stage("S3") {
+            parallel {
+                stage("S4") {
+                    steps {
+                        echo "S4..."
+                    }
+                }
+                stage("S5") {
+                    steps {
+                        echo "S5..."
+                    }
+                }
+                stage("S6") {
+                    steps {
+                        echo "S6..."
+                    }
+                }
+            }
+        }
+        stage("S7") {
+            steps {
+            	echo "S7..."
+            }
+        }
     }
 }
