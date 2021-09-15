@@ -7,9 +7,6 @@ pipeline {
     tools { 
         maven 'Maven' 
     }
-    environment {
-        SCANNER_HOME = tool 'sonarScanner'
-    }
     stages {
         stage("Build") {
             steps {
@@ -54,8 +51,4 @@ pipeline {
         }
     }
 }
-def sonarTest() {
-    withSonarQubeEnv('SonarQube_Cloud') {
-	    sh '${SCANNER_HOME}/bin/sonar-scanner -Dproject.settings=${SCANNER_HOME}/conf/sonar-scanner.properties'
-    }
-}
+
