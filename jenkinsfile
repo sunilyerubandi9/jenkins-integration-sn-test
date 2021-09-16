@@ -30,9 +30,6 @@ pipeline {
                 }
                 stage("S5") {
                     steps {
-                        snDevOpsChange()
-                        snDevOpsChange()
-                        snDevOpsChange()
                         echo "S5..."
                     }
                 }
