@@ -23,6 +23,11 @@ pipeline {
                         echo "S4..."
                     }
                 }
+                stage("S4") {
+                    steps {
+                        echo "S4 change..."
+                    }
+                }
                 stage("S5") {
                     steps {
                         snDevOpsChange()
