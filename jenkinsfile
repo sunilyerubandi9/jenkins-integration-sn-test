@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        snDevOpsChange()
         stage("S0") {
             steps {
+                snDevOpsChange()
             	echo "S0..."
             }
         }
