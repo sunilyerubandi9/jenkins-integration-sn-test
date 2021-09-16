@@ -31,7 +31,7 @@ pipeline {
                     stage("Deploy to Mac") {
                
                         steps {
-                            snDevOpsChange()
+                            
                             echo "Deploying.."
                             snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
                                 {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
