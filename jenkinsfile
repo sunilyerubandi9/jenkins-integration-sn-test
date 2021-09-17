@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage("S0") {
             steps {
-                snDevOpsChange()
+                
             	echo "S0..."
             }
         }
