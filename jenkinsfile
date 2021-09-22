@@ -7,31 +7,54 @@ pipeline {
             }
         }
         stage("S1") {
-            parallel {
+            stages {
                 stage("S2") {
                     stages {
                         stage("S3") {
-                            steps {
-                                echo "S3..."
+                            parallel {
+                                stage("S4") {
+                                    steps {
+                                        echo "S4..."
+                                    }
+                                }
+                                stage("S5") {
+                                    steps {
+                                        echo "S5..."
+                                    }
+                                }
                             }
                         }
-                        stage("S4") {
+                        stage("S6") {
+                            parallel {
+                                stage("S7") {
+                                    steps {
+                                        echo "S7..."
+                                    }
+                                }
+                                stage("S8") {
+                                    steps {
+                                        echo "S8..."
+                                    }
+                                }
+                            }
+                        }
+                        stage("S9") {
                             steps {
-                                echo "S4..."
+                                echo "S9..."
                             }
                         }
                     }
                 }
-                stage("S5") {
+                stage("S10") {
                     steps {
-                        echo "S5..."
+                        echo "S10..."
                     }
                 }
             }
         }
-        stage("S6") {
+        stage("S11") {
             steps {
-            	echo "S6..."
+            	echo "S11..."
             }
         }
     }
