@@ -10,20 +10,30 @@ pipeline {
             parallel {
                 stage("S2") {
                     stages {
-                        stage("S3") {
+                        stage("Test") {
                             steps {
-                                echo "S3..."
-                            }
+            	                echo "Testing..."
+                                sh "/usr/local/bin/mvn test -Dpublish"
+                                junit "**/target/surefire-reports/*.xml"
+                                }
                         }
-                        stage("S4") {
-                            steps {
-                                echo "S4..."
-                            }
+                        stage("Artifacts") {
+                            steps steps {
+                            snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
+                                {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
+                                {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
+                                {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
+                                {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
+                                {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
+                                echo "Deploying.."
+                        }
                         }
                     }
                 }
                 stage("S5") {
                     steps {
+                        snDevOpsChange()
+                        snDevOpsChange()
                         echo "S5..."
                     }
                 }
