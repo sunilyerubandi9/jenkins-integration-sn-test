@@ -1,57 +1,125 @@
-
+def artifactname = "133testing-app.jar"
+def repoName = "rome-rp1-app-repo"
+def pipelineName = "balu_scripted_pipeline"
 def semanticVersion = "${env.BUILD_NUMBER}.0.0"
-def packageName = "devops_pipeline_demo_${env.BUILD_NUMBER}"
+def packageName = "rome-rp1-package_${env.BUILD_NUMBER}"
 def version = "${env.BUILD_NUMBER}.0"
-pipeline {
-    agent any
-    tools { 
-        maven 'Maven' 
-    }
-    stages {
-        stage("Build") {
-            steps {
-                echo "Building..."
-                sh '/usr/local/bin/mvn clean install -DskipTests=true'
-            }
-        }
-        stage("SoftwareQuality") {
-            steps {
-            	echo "Software Quality..."
-            }
-        }
-        stage("Test") {
-            steps {
-            	echo "Testing..."
-                sh "/usr/local/bin/mvn test -Dpublish"
-                junit "**/target/surefire-reports/*.xml"
-            }
-        }
-        stage("Deploy") {
-                stages {
-                    stage("Deploy to Mac") {
-                        steps {
-                            snDevOpsArtifact(artifactsPayload:"""{"artifacts": [
-                                {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                                {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                                {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                                {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                                {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
-                                echo "Deploying.."
-                        }
-                    }
-                }
-        }
-        stage("Prod") {
-            steps {
-            	echo "Prod deploy..."
-                snDevOpsPackage(name: "${packageName}", artifactsPayload: """{"artifacts": [
-                    {"name": "demo1.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo1"},
-                    {"name": "demo2.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo2"},
-                    {"name": "demo3.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo3"},
-                    {"name": "demo4.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo4"},
-                    {"name": "demo5.jar","version": "${version}","semanticVersion": "${semanticVersion}","repositoryName": "demo5"}]}""")
-            }
-        }
-    }
-}
+def pkgName = "rome-rp1-package"
 
+pipeline {
+  agent any
+  tools {
+       maven 'Maven'
+   }
+   environment {
+	 SCANNER_HOME = tool 'sonarScanner'
+	}  
+  stages {
+       stage('Build &1') {
+           steps {
+              
+              //sh 'mvn -B -DskipTests clean compile'
+			sh 'mvn test'
+           }
+           post {
+             always {
+                junit "**/target/surefire-reports/*.xml"
+             }
+           }
+       }
+       stage('Test &2') {
+           steps {
+              
+              sh 'mvn test'
+           }
+           post {
+             always {
+                junit "**/target/surefire-reports/*.xml"
+             }
+           }
+       }
+
+
+
+      
+      stage('CodeCoverage &5') {
+                 steps {
+                    
+                    echo 'sonar summaries....'
+                                       
+                 }
+      }
+      
+           stage('Upload-JFrog_Artifact') {
+            steps {
+                echo 'uploading jfrog artifact......'
+            }
+            
+            post { 
+                always { 
+	                script { 
+			                 def server = Artifactory.server 'devopsbalujfrog'
+			                 def uploadSpec= """{
+			                    "files": [{
+			                       "pattern": "/var/jenkins_home/workspace/jfrog_fs/target/test_devops-0.0.1-SNAPSHOT.jar",
+			                       "target":"balu_maven-libs-snapshot-local/jfrog_pipeline_upload/"
+			                    }]
+			                 }"""
+			
+			              def buildInfo = server.upload(uploadSpec) 
+			              server.publishBuildInfo buildInfo   
+	        		}
+       			 }
+       		}
+            
+        }//end of stage
+        stage('Download-JFrog_Artifact') {
+            steps {
+                echo 'downloading jfrog artifact'
+            }
+            
+            post {
+                  always {
+                  		
+                   script { 
+			                 def server = Artifactory.server 'devopsbalujfrog'
+			                 def downSpec= """{
+			                    "files": [{
+			                       "pattern": "balu_maven-libs-snapshot-local/jfrog_pipeline_upload/test_devops-0.0.1-SNAPSHOT.jar",
+			                       "target":"balu_maven-libs-snapshot-local/jfrog_pipeline_download/${BUILD_NUMBER}/"
+			                    }]
+			                 }"""
+			
+			              def buildInfo = server.download(downSpec) 
+			              server.publishBuildInfo buildInfo   
+			       	 	
+			        
+			        } // end of script
+			        
+			       } //end of always
+            }//end of post
+       
+       } //end of stage
+
+       
+      stage('Deploy &3') {
+                 steps {
+                    
+                    echo 'Deploying the change....'
+                    snDevOpsChange(ignoreErrors:false)
+ 
+                    //snDevOpsArtifact(artifactsPayload: """{"artifacts": [{"name": "${artifactname}", "version": "1.${env.BUILD_NUMBER}","semanticVersion": "1.${env.BUILD_NUMBER}.0","repositoryName": "${repoName}"}],"branchName":"master"}""")
+           			//snDevOpsPackage(name: "${pkgName}-${env.BUILD_NUMBER}", artifactsPayload: """{"artifacts":[{"name": "${artifactname}", "version": "1.${env.BUILD_NUMBER}", "repositoryName": "${repoName}"}], "branchName":"master"}""")
+                    
+                 }
+      }   
+
+      
+
+        
+ 
+ }//end of stages
+} //end of pipeline
+
+	
+} // end of def sonarsummaries
