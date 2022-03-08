@@ -17,23 +17,25 @@ pipeline {
   stages {
        stage('Build &1') {
            steps {
-              
+              echo 'build 1'
               //sh 'mvn -B -DskipTests clean compile'
 			
            }
            post {
              always {
+	     echo 'build 1 always'
                 //junit "**/target/surefire-reports/*.xml"
              }
            }
        }
        stage('Test &2') {
            steps {
-              
+              echo 'test 2'
               
            }
            post {
              always {
+	     echo 'test 2 always '
                 //junit "**/target/surefire-reports/*.xml"
              }
            }
