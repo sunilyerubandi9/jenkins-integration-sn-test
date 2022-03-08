@@ -19,22 +19,22 @@ pipeline {
            steps {
               
               //sh 'mvn -B -DskipTests clean compile'
-			sh 'mvn test'
+			
            }
            post {
              always {
-                junit "**/target/surefire-reports/*.xml"
+                //junit "**/target/surefire-reports/*.xml"
              }
            }
        }
        stage('Test &2') {
            steps {
               
-              sh 'mvn test'
+              
            }
            post {
              always {
-                junit "**/target/surefire-reports/*.xml"
+                //junit "**/target/surefire-reports/*.xml"
              }
            }
        }
