@@ -122,4 +122,3 @@ pipeline {
 } //end of pipeline
 
 	
-} // end of def sonarsummaries
